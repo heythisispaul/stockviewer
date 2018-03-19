@@ -1,0 +1,12 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "stocks-client-side-solution",
+    "id": "c7474bd8-0fc3-4f69-bb36-5eef4b58c629",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true
+  },
+  "paths": {
+    "zippedPackage": "solution/stocks.sppkg"
+  }
+}

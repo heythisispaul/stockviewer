@@ -1,0 +1,18 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "stock-tracker-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/stockTracker/StockTrackerWebPart.js",
+          "manifest": "./src/webparts/stockTracker/StockTrackerWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "StockTrackerWebPartStrings": "lib/webparts/stockTracker/loc/{locale}.js"
+  }
+}
