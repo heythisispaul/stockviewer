@@ -3,13 +3,12 @@ import styles from './StockTracker.module.scss';
 import { IStockTrackerProps } from './IStockTrackerProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 import SimpleViewer from './SimpleViewer';
-import axios from 'axios';
 
 export default class StockTracker extends React.Component<IStockTrackerProps, {}> {
   public render(): React.ReactElement<IStockTrackerProps> {
     return (
       <div ref="stockDisplay">
-      { this.props.style == '1' ? <SimpleViewer stock =  { this.props.stock } /> : "You've Selected Graph"}
+      { this.props.style == '1' ? <SimpleViewer {...this.props}/> : "You've Selected Graph"}
       </div>
 
       // <div className={ styles.stockTracker }>
@@ -27,12 +26,5 @@ export default class StockTracker extends React.Component<IStockTrackerProps, {}
       //   </div>
       // </div>
     );
-  }
-
-  componentDidMount(){
-    axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.stock}&interval=5min&apikey=${this.props.APIkey}`)
-    .then((res) => {
-      console.log(res.data);
-    })
   }
 }

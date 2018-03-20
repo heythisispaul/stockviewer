@@ -1,4 +1,6 @@
 export interface ISimpleViewerProps {
-    stock: string;
+  stock: string;
+  APIkey: string;
+  style: string;
   }
   
