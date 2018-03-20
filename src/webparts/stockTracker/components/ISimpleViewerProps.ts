@@ -1,6 +1,6 @@
 export interface ISimpleViewerProps {
-  stock: string;
-  APIkey: string;
-  style: string;
+    stock: string;
+    stockTime: string;
+    recentClose: any;
   }
   
