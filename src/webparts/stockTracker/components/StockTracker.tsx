@@ -12,10 +12,25 @@ export default class StockTracker extends React.Component<IStockTrackerProps, IS
 
     this.state = {
       stockTime: "",
-      recentClose: undefined
+      recentClose: ""
     }
-
   }
+
+  private getStock(): void {
+    axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.stock}&interval=5min&outputsize=compact&apikey=${this.props.APIkey}`)
+    .then((res) => {
+      let data = res.data["Time Series (5min)"];
+      let recent = Object.keys(data)[0];
+      return this.setState({
+        stockTime: recent,
+        recentClose: parseFloat(data[recent]["4. close"]).toFixed(2)
+      })
+    })
+    .catch((err) => {
+      console.log("err: "+ err);
+    })
+  }
+  
   public render(): React.ReactElement<IStockTrackerProps> {
     return (
       <div ref="stockDisplay">
@@ -38,18 +53,21 @@ export default class StockTracker extends React.Component<IStockTrackerProps, IS
       // </div>
     );
   }
-  public componentDidMount(): void {
-    axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.stock}&interval=5min&outputsize=compact&apikey=${this.props.APIkey}`)
-    .then((res) => {
-      let data = res.data["Time Series (5min)"];
-      let recent = Object.keys(data)[0];
-      console.log(data);
-      console.log(recent.toLocaleString() + ": " + JSON.stringify(data[recent]));
-      console.log(data[recent]["4. close"]);
-      return this.setState({
-        stockTime: recent,
-        recentClose: parseFloat(data[recent]["4. close"]).toFixed(2)
-      })
-    })
+
+  public componentDidMount() {
+    if (this.props.stock) {
+      this.getStock();
+  }
+  //this should probably get cut off on unmounting.
+  setInterval(() => {
+    console.log("stock updated at " + new Date());
+    this.getStock();
+  }, 301000);
+}
+
+  public componentWillReceiveProps(props) {
+    setTimeout(() => {
+      this.getStock();
+    }, 750);
   }
 }
