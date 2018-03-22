@@ -16,6 +16,7 @@ export interface IStockTrackerWebPartProps {
   stock: string;
   APIkey: string;
   style: string;
+  title: string;
 }
 
 export default class StockTrackerWebPart extends BaseClientSideWebPart<IStockTrackerWebPartProps> {
@@ -26,7 +27,8 @@ export default class StockTrackerWebPart extends BaseClientSideWebPart<IStockTra
       {
         stock: this.properties.stock,
         APIkey: this.properties.APIkey,
-        style: this.properties.style
+        style: this.properties.style,
+        title: this.properties.title
       }
     );
 
@@ -48,6 +50,9 @@ export default class StockTrackerWebPart extends BaseClientSideWebPart<IStockTra
             {
               groupName: strings.BasicGroupName,
               groupFields: [
+                PropertyPaneTextField('title', {
+                  label: "Company/Title"
+                }),
                 PropertyPaneTextField('stock', {
                   label: "Stock Symbol"
                 }),

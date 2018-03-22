@@ -12,14 +12,15 @@ export default class StockTracker extends React.Component<IStockTrackerProps, IS
 
     this.state = {
       stockTime: "",
-      recentClose: ""
+      recentClose: "",
+      yesterdayClose: ""
     }
   }
 
   private getStock(): void {
-    axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.stock}&interval=5min&outputsize=compact&apikey=${this.props.APIkey}`)
+    axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.stock}&interval=1min&outputsize=compact&apikey=${this.props.APIkey}`)
     .then((res) => {
-      let data = res.data["Time Series (5min)"];
+      let data = res.data["Time Series (1min)"];
       let recent = Object.keys(data)[0];
       return this.setState({
         stockTime: recent,
@@ -30,11 +31,24 @@ export default class StockTracker extends React.Component<IStockTrackerProps, IS
       console.log("err: "+ err);
     })
   }
+
+  private getLastClose(): void {
+    axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.props.stock}&apikey=${this.props.APIkey}`)
+    .then((res) => {
+      let data = res.data["Time Series (Daily)"];
+      let last = Object.keys(data)[1];
+      return this.setState({
+        yesterdayClose: parseFloat(data[last]["4. close"]).toFixed(2)
+      })
+    })
+  }
   
   public render(): React.ReactElement<IStockTrackerProps> {
     return (
       <div ref="stockDisplay">
-      { this.props.style == '1' ? <SimpleViewer stock = { this.props.stock } stockTime = { this.state.stockTime } recentClose = { this.state.recentClose }/> : "You've Selected Graph but you're thing is worth " + this.state.recentClose}
+      { this.props.style == '1' 
+      ? <SimpleViewer stock = { this.props.stock } stockTime = { this.state.stockTime } recentClose = { this.state.recentClose } title = { this.props.title } yesterdayclose = { this.state.yesterdayClose }/> 
+      : "You've Selected Graph but you're thing is worth " + this.state.recentClose}
       </div>
 
       // <div className={ styles.stockTracker }>
@@ -57,12 +71,13 @@ export default class StockTracker extends React.Component<IStockTrackerProps, IS
   public componentDidMount() {
     if (this.props.stock) {
       this.getStock();
+      this.getLastClose();
   }
   //this should probably get cut off on unmounting.
   setInterval(() => {
     console.log("stock updated at " + new Date());
     this.getStock();
-  }, 301000);
+  }, 61000);
 }
 
   public componentWillReceiveProps(props) {

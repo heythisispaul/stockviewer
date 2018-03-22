@@ -18,7 +18,7 @@
     "group": { "default": "Other" },
     "title": { "default": "Stock Tracker" },
     "description": { "default": "Stock Tracker description" },
-    "officeFabricIconFontName": "Page",
+    "officeFabricIconFontName": "LineChart",
     "properties": {
       "description": "Stock Tracker"
     }
