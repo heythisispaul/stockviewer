@@ -10,7 +10,7 @@
   .row {
     @include ms-Grid-row;
     @include ms-fontColor-white;
-    background-color: $ms-color-themeDark;
+    background-color: white;
     padding: 20px;
   }
 
@@ -24,17 +24,17 @@
 
   .title {
     @include ms-font-xl;
-    @include ms-fontColor-white;
+    @include ms-fontColor-black;
   }
 
   .subTitle {
     @include ms-font-l;
-    @include ms-fontColor-white;
+    @include ms-fontColor-black;
   }
 
   .description {
     @include ms-font-l;
-    @include ms-fontColor-white;
+    @include ms-fontColor-black;
   }
 
   .button {
@@ -74,9 +74,27 @@
 
   .greater {
     color: green;
+    @include ms-font-l
   }
 
   .lesser {
     color: red;
+    @include ms-font-l
+  }
+
+  .stock {
+    color: black;
+    @include ms-font-xxl
+  }
+
+  .currency {
+    @include ms-font-s;
+    color: black
+  }
+
+  .error {
+    color: black;
+    text-align: center;
+    font-size: 40px;
   }
 }

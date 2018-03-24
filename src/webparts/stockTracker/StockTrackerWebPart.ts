@@ -5,7 +5,9 @@ import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
-  PropertyPaneDropdown
+  PropertyPaneDropdown,
+  PropertyPaneCustomField,
+  PropertyPaneButton
 } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'StockTrackerWebPartStrings';
@@ -39,17 +41,33 @@ export default class StockTrackerWebPart extends BaseClientSideWebPart<IStockTra
     return Version.parse('1.0');
   }
 
+  protected AlphaV(domElement: HTMLElement) {
+    domElement.innerHTML = `
+    <div>
+      This webpart is powered by Alpha Vantage and requires an API key be entered before use. You can get one for free on their <a href="https://www.alphavantage.co/support/#api-key">website.</a>
+    </div>
+    `
+  }
+
+  protected get disableReactivePropertyChanges(): boolean { 
+    return true; 
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
         {
           header: {
-            description: `This webpart is powered by <a href='https://www.alphavantage.co/'>Alpha Vantage</a> and you will need an API Key to use it. Get one free at their website.`
+            description: `Stock Tracker`
           },
           groups: [
             {
               groupName: strings.BasicGroupName,
               groupFields: [
+                PropertyPaneCustomField({
+                  onRender: this.AlphaV,
+                  key: 'alphaV'
+                }),
                 PropertyPaneTextField('title', {
                   label: "Company/Title"
                 }),

@@ -4,7 +4,10 @@ import { IStockTrackerProps } from './IStockTrackerProps';
 import { IStockTrackerState } from './IStockTrackerState';
 import { escape } from '@microsoft/sp-lodash-subset';
 import SimpleViewer from './SimpleViewer';
+import GraphViewer from './GraphViewer';
 import axios from 'axios';
+import Configure from './Configure';
+import CaughtError from './CaughtError';
 
 export default class StockTracker extends React.Component<IStockTrackerProps, IStockTrackerState> {
   constructor(props) {
@@ -13,22 +16,44 @@ export default class StockTracker extends React.Component<IStockTrackerProps, IS
     this.state = {
       stockTime: "",
       recentClose: "",
-      yesterdayClose: ""
-    }
+      yesterdayClose: "",
+      graphTimes: "",
+      graphValues: "",
+      errorCaught: false
+    };
   }
 
+  private getChartData(): void {
+    axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.stock}&interval=15min&outputsize=full&apikey=${this.props.APIkey}`)
+    .then((res) => {
+      let data = res.data["Time Series (15min)"];
+      let graphTimes = Object.keys(data);      
+      let values = graphTimes.map((e) => {
+        let vals = data[e]["4. close"];
+        return parseFloat(vals).toFixed(2);
+      })
+      return this.setState({
+        graphTimes: graphTimes.slice(0, 100).reverse(),
+        graphValues: values.slice(0, 100).reverse()
+      })
+    })
+  }
   private getStock(): void {
     axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.stock}&interval=1min&outputsize=compact&apikey=${this.props.APIkey}`)
     .then((res) => {
       let data = res.data["Time Series (1min)"];
       let recent = Object.keys(data)[0];
       return this.setState({
-        stockTime: recent,
-        recentClose: parseFloat(data[recent]["4. close"]).toFixed(2)
+        stockTime: recent.toLocaleString(),
+        recentClose: parseFloat(data[recent]["4. close"]).toFixed(2),
+        errorCaught: false
       })
     })
     .catch((err) => {
       console.log("err: "+ err);
+      this.setState({
+        errorCaught: true
+      })
     })
   }
 
@@ -44,38 +69,44 @@ export default class StockTracker extends React.Component<IStockTrackerProps, IS
   }
   
   public render(): React.ReactElement<IStockTrackerProps> {
-    return (
-      <div ref="stockDisplay">
-      { this.props.style == '1' 
-      ? <SimpleViewer stock = { this.props.stock } stockTime = { this.state.stockTime } recentClose = { this.state.recentClose } title = { this.props.title } yesterdayclose = { this.state.yesterdayClose }/> 
-      : "You've Selected Graph but you're thing is worth " + this.state.recentClose}
-      </div>
-
-      // <div className={ styles.stockTracker }>
-      //   <div className={ styles.container }>
-      //     <div className={ styles.row }>
-      //       <div className={ styles.column }>
-      //         <span className={ styles.title }>Welcome to SharePoint!</span>
-      //         <p className={ styles.subTitle }>Customize SharePoint experiences using Web Parts.</p>
-      //         <p className={ styles.description }>{escape(this.props.description)}</p>
-      //         <a href="https://aka.ms/spfx" className={ styles.button }>
-      //           <span className={ styles.label }>Learn more</span>
-      //         </a>
-      //       </div>
-      //     </div>
-      //   </div>
-      // </div>
-    );
+    if (this.state.errorCaught == true) {
+      return  <CaughtError />
+    }
+  
+    if ( this.props.style == '1') {
+      return <SimpleViewer 
+      stock = { this.props.stock } 
+      stockTime = { this.state.stockTime } 
+      recentClose = { this.state.recentClose } 
+      title = { this.props.title } 
+      yesterdayclose = { this.state.yesterdayClose } />
+    }
+    if ( this.props.style == '2') {
+      return (
+          <GraphViewer 
+          stock = { this.props.stock } 
+          stockTime = { this.state.stockTime } 
+          recentClose = { this.state.recentClose } 
+          title = { this.props.title } 
+          yesterdayclose = { this.state.yesterdayClose }
+          graphTimes = { this.state.graphTimes } 
+          graphValues = { this.state.graphValues }
+          />
+      )
+    }
+    else {
+      return <Configure />
+    }
   }
 
   public componentDidMount() {
     if (this.props.stock) {
       this.getStock();
       this.getLastClose();
+      this.getChartData();
   }
   //this should probably get cut off on unmounting.
   setInterval(() => {
-    console.log("stock updated at " + new Date());
     this.getStock();
   }, 61000);
 }
@@ -83,6 +114,8 @@ export default class StockTracker extends React.Component<IStockTrackerProps, IS
   public componentWillReceiveProps(props) {
     setTimeout(() => {
       this.getStock();
+      this.getLastClose();
+      this.getChartData();
     }, 750);
   }
 }

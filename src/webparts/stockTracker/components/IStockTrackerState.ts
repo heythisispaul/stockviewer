@@ -1,6 +1,9 @@
 export interface IStockTrackerState {
-    stockTime: string;
+    stockTime: any;
     recentClose: any;
     yesterdayClose: any;
+    graphTimes: any;
+    graphValues: any;
+    errorCaught: boolean;
   }
   
