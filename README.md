@@ -1,4 +1,4 @@
-# RSS Reader SharePoint Webpart
+# Stock Tracker SharePoint Webpart
 
 ## Summary
 This webpart allows you to include pricing and value information for a stock of your choice onto a site page in the modern SharePoint experience. This web part pulls data every 60 seconds from [Alpha Vantage](https://www.alphavantage.co/) once it has been mounted to a page. It requires an API Key to get started. Alpha Vantage provides them for free and all it takes is an email to [get one](https://www.alphavantage.co/support/#api-key).
@@ -7,7 +7,7 @@ Both the 'Compact' view and the 'Graph' view will show you the most recent data 
 
 The 'Graph' view is pulling the 100 most recent snapshots of 15 minute intervals. These values are displayed on a graph powered by everyone's favorite: [Charts.js.](http://www.chartjs.org/)
 
-This webpart has been built in React 15.6 and SPFx 1.4.1 so if you're happy with it's current configuration and just want to start using it yourself, just download the `stocks.sppkg` file in the `sharepoint/solution` folder and upload it to your tenant. 
+This webpart has been built in React 15.6 and SPFx 1.4.1 so if you're happy with its current configuration and just want to start using it yourself, just download the `stocks.sppkg` file in the `sharepoint/solution` folder and upload it to your tenant. 
 
 
 ![Demo](./assets/stockviewer.gif)
