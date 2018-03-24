@@ -10,7 +10,7 @@ The 'Graph' view is pulling the 100 most recent snapshots of 15 minute intervals
 This webpart has been built in React 15.6 and SPFx 1.4.1 so if you're happy with it's current configuration and just want to start using it yourself, just download the `stocks.sppkg` file in the `sharepoint/solution` folder and upload it to your tenant. 
 
 
-![Demo](./Assets/stockviewer.gif)
+![Demo](./assets/stockviewer.gif)
 
 ## Applies to
 
