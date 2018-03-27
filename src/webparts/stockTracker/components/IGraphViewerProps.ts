@@ -6,5 +6,6 @@ export interface IGraphViewerProps {
     yesterdayclose: any;
     graphTimes: any;
     graphValues: any;
+    style: string;
   }
   

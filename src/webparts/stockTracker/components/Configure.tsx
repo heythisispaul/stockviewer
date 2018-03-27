@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import styles from './StockTracker.module.scss';
 interface WelcomeProps {
     name: string,
@@ -17,7 +17,7 @@ const Configure: React.SFC = (props) => {
       </div>
     </div>
   </div>  
- )
-}
+ );
+};
 
 export default Configure;

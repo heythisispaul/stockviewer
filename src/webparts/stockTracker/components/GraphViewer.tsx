@@ -35,7 +35,7 @@ export default class GraphViewer extends React.Component<IGraphViewerProps, {}> 
         };
 
         if (!this.props.graphValues || !this.props.graphTimes) {
-            return <Spinner size={ SpinnerSize.large }/>
+            return <Spinner size={ SpinnerSize.large }/>;
         }
 
         return (
@@ -55,16 +55,10 @@ export default class GraphViewer extends React.Component<IGraphViewerProps, {}> 
                     <span className= { diff >= 0 ? styles.greater : styles.lesser }> { percentFormat(diff, this.props.yesterdayclose) }</span>
                   </div>
                 </div>
-                <Line data={ data }/>
+                { this.props.style == '2' ? <Line data={ data }/> : null }
               </div>
             </div>
           </div>
-            
-
-        )
-    }
-
-    componentDidMount() {
-
+        );
     }
 }

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import styles from './StockTracker.module.scss';
 import { initializeIcons } from '@uifabric/icons';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
@@ -19,7 +19,7 @@ const CaughtError: React.SFC = (props) => {
       </div>
     </div>
   </div>  
- )
-}
+ );
+};
 
 export default CaughtError;
