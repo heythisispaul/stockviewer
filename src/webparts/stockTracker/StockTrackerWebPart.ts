@@ -62,7 +62,7 @@ export default class StockTrackerWebPart extends BaseClientSideWebPart<IStockTra
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: "Configuration",
               groupFields: [
                 PropertyPaneCustomField({
                   onRender: this.AlphaV,
