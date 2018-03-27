@@ -12,6 +12,9 @@ This webpart has been built in React 15.6 and SPFx 1.4.1 so if you're happy with
 
 ![Demo](./assets/stockviewer.gif)
 
+## Used SharePoint Framework Version 
+![drop](https://img.shields.io/badge/version-GA-green.svg)
+
 ## Applies to
 
 * [SharePoint Framework](https:/dev.office.com/sharepoint)
@@ -40,3 +43,8 @@ Version|Date|Comments
 - in the command line run:
   - `npm install`
   - `gulp serve`
+
+  ## Features
+  
+  - SPFx React framework
+  - using Office UI Fabric React components for building user experience
